@@ -12,58 +12,43 @@ use Illuminate\Support\Facades\Hash;
 class AuthServices
 {
 
-    public function registerService(Request $request)
+    public function registerService(array $data): User
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:150',
-            'email' => 'required|string|email|max:150|unique:users',
-            'password' => 'required|string|min:8',
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
         ]);
-
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        $token = $user->createToken(
-            name: 'auth_token',
-            abilities: ['*'],
-            expiresAt: now()->addMinutes(270)
-        )->plainTextToken;
-
-        $data = [
-            'user' => $user,
-            'access_token' => $token,
-        ];
-
-        return $data;
     }
 
-    public function loginService(Request $request)
+    public function loginService(array $credentials): User
     {
-        if (! Auth::attempt($request->only('email', 'password'))) {
+        if (! Auth::validate($credentials)) {
             throw new AuthenticationException('Invalid email or password.');
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        return User::where('email', $credentials['email'])->first();
+    }
 
-        $token = $user->createToken(
+    public function generateToken(User $user): string
+    {
+        return $user->createToken(
             name: 'auth_token',
             abilities: ['*'],
             expiresAt: now()->addMinutes(270)
         )->plainTextToken;
-
-        $data = [
-            'user' => new UserResource($user),
-            'access_token' => $token
-        ];
-
-        return $data;
     }
 
-    public function logoutService(User $user): void
+    public function logoutServiceAPI(User $user): void
     {
         $user->currentAccessToken()->delete();
+    }
+
+    public function logoutServiceWeb(Request $request): void
+    {
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
     }
 }

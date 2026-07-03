@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\RegisterRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 use App\Http\Services\AuthServices;
 use App\Trait\ApiResponse;
 use Illuminate\Http\Request;
@@ -19,29 +23,45 @@ class AuthController extends Controller
         $this->authServices = $authServices;
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $user = $this->authServices->registerService($request);
+        $user = $this->authServices->registerService($request->validated());
+
+        $token = $this->authServices->generateToken($user);
+
+        $data = [
+            'user' => $user,
+            'access_token' => $token,
+        ];
 
         return $this->createdResponse('User registered successfully', [
-            'user' => $user['user'],
-            'access_token' => $user['access_token'],
+            'user' => $data['user'],
+            'access_token' => $data['access_token'],
         ]);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $user = $this->authServices->loginService($request);
+        $user = $this->authServices->loginService($request->validated());
+
+        $token = $this->authServices->generateToken($user);
+
+        Auth::setUser($user);
+
+        $data = [
+            'user' => new UserResource($user),
+            'access_token' => $token
+        ];
 
         return $this->successResponse('Login successful', [
-            'user' => $user['user'],
-            'access_token' => $user['access_token'],
+            'user' => $data['user'],
+            'access_token' => $data['access_token'],
         ]);
     }
 
     public function logout(Request $request)
     {
-        $this->authServices->logoutService($request->user());
+        $this->authServices->logoutServiceAPI($request->user());
 
         return $this->successResponse('Logout successful');
     }

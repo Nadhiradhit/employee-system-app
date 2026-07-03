@@ -9,22 +9,14 @@ use Illuminate\Http\Request;
 class EmployeeServices
 {
 
-    public function createEmployee(Request $request)
+    public function createEmployee(array $data)
     {
-        $validate = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'phone_number' => 'required|string|max:15',
-            'department' => 'required|string|max:100',
-            'joining_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
-        ]);
-
         $employee = Employee::create([
-            'user_id' => $validate['user_id'],
-            'phone_number' => $validate['phone_number'],
-            'department' => $validate['department'],
-            'joining_date' => $validate['joining_date'],
-            'status' => $validate['status'],
+            'user_id' => $data['user_id'],
+            'phone_number' => $data['phone_number'],
+            'department' => $data['department'],
+            'joining_date' => $data['joining_date'],
+            'status' => $data['status'],
         ]);
 
         return $employee;
@@ -42,18 +34,10 @@ class EmployeeServices
         return Employee::where('user_id', $userId)->firstOrFail();
     }
 
-    public function updateEmployee(Request $request, $userId)
+    public function updateEmployee(array $data, $userId)
     {
-        $validate = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'phone_number' => 'required|string|max:15',
-            'department' => 'required|string|max:100',
-            'joining_date' => 'required|date',
-            'status' => 'required|in:active,inactive',
-        ]);
-
         $employee = Employee::where('user_id', $userId)->firstOrFail();
-        $employee->update($validate);
+        $employee->update($data);
 
         return $employee;
     }
