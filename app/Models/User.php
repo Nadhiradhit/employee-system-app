@@ -6,8 +6,9 @@ namespace App\Models;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -30,6 +31,11 @@ class User extends Authenticatable
         'role'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -41,5 +47,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class, 'user_id', 'id');
     }
 }
