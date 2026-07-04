@@ -4,6 +4,7 @@ use App\Http\Controllers\web\AuthController;
 use App\Http\Controllers\web\DashboardController;
 use App\Http\Controllers\web\EmployeeController;
 use App\Http\Controllers\web\UserController;
+use App\Http\Controllers\web\WeatherController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -50,6 +51,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [EmployeeController::class, 'index'])->name('index');
         Route::get('/{user_id}', [EmployeeController::class, 'show'])->name('show');
     });
+
+    // Weather API — throttled to protect daily quota
+    Route::get('/weather', [WeatherController::class, 'show'])
+        ->middleware('throttle:10,1')
+        ->name('weather.show');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

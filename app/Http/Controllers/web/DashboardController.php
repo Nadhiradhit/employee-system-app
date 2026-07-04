@@ -3,22 +3,24 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Services\EmployeeService;
 
 class DashboardController extends Controller
 {
-    /**
-     * Admin dashboard — employee management with full CRUD.
-     */
+    public function __construct(
+        private EmployeeService $employeeService
+    ) {}
+
     public function admin()
     {
-        return view('admin.index');
+        $employees = $this->employeeService->list(limit: 5, filterByStatus: 'active', sortColumn: 'joining_date', sortBy: 'desc');
+        return view('admin.index', compact('employees'));
     }
 
-    /**
-     * Regular user dashboard — read-only employee list.
-     */
+
     public function user()
     {
-        return view('users.index');
+        $employees = $this->employeeService->list(limit: 5, filterByStatus: 'active', sortColumn: 'joining_date', sortBy: 'desc');
+        return view('users.index', compact('employees'));
     }
 }
