@@ -1,20 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-
-<body>
+<x-layout.dashboard>
     ini adalah user
 
-    <form action="{{ route('logout') }}" method="post">
-        @csrf
-        <button type="submit" id="logout">Logout</button>
-    </form>
-</body>
 
-</html>
+</x-layout.dashboard>

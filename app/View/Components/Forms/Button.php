@@ -10,6 +10,8 @@ class Button extends Component
 {
     public string $variantClass;
     public string $sizeClass;
+    public bool $isHaveIcon;
+
 
     /**
      * Create a new component instance.
@@ -18,6 +20,8 @@ class Button extends Component
         public string $type = 'button',
         public string $variant = 'primary',
         public string $size = 'md',
+        public ?string $icon = null,
+
     ) {
         $this->variantClass = match ($this->variant) {
             'danger'  => 'btn-error',
@@ -30,8 +34,12 @@ class Button extends Component
             'xs' => 'btn-xs',
             'sm' => 'btn-sm',
             'lg' => 'btn-lg',
+            'xl' => 'btn-xl',
+            'full' => 'w-full',
             default => 'btn-md',
         };
+
+        $this->isHaveIcon = !is_null($this->icon);
     }
 
     /**
