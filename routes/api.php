@@ -16,7 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::post(
             '/employees',
-            [EmployeeController::class, 'store']
+            [EmployeeController::class, 'create']
         );
 
         Route::put(
