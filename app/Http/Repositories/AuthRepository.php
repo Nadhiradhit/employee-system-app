@@ -4,6 +4,7 @@ namespace App\Http\Repositories;
 
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
+use OwenIt\Auditing\Models\Audit;
 
 class UserRepository
 {
@@ -19,7 +20,9 @@ class UserRepository
 
     public function create(array $attributes): User
     {
-        return User::create($attributes);
+        $user = User::create($attributes);
+
+        return $user;
     }
 
     public function update(User $user, array $attributes): User

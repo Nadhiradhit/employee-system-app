@@ -2,7 +2,6 @@
 
 namespace App\Http\Services;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
@@ -27,7 +26,22 @@ class AuthServices
             throw new AuthenticationException('Invalid email or password.');
         }
 
-        return User::where('email', $credentials['email'])->first();
+        $user = User::where('email', $credentials['email'])->first();
+
+        \OwenIt\Auditing\Models\Audit::create([
+            'event'          => 'login',
+            'auditable_type' => User::class,
+            'auditable_id'   => $user->id,
+            'user_type'      => $user->is_admin ? 'admin' : 'user',
+            'user_id'        => $user->id,
+            'url'            => request()->fullUrl(),
+            'ip_address'     => request()->ip(),
+            'user_agent'     => request()->userAgent(),
+            'old_values'     => [],
+            'new_values'     => [],
+        ]);
+
+        return $user;
     }
 
     public function generateToken(User $user): string

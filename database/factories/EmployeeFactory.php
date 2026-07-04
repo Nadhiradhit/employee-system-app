@@ -20,7 +20,7 @@ class EmployeeFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'phone_number' => $this->faker->phoneNumber(),
+            'phone_number' => $this->faker->regexify('\+628[0-9]{12}'),
             'department' => $this->faker->jobTitle(),
             'joining_date' => $this->faker->date(),
             'status' => $this->faker->randomElement(['active', 'inactive'])

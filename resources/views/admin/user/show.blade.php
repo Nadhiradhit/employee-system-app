@@ -30,11 +30,9 @@
             </div>
         </div>
 
-        {{-- Detail Card --}}
         <div class="card bg-base-100 border border-base-content/5">
             <div class="card-body">
                 <div class="flex flex-col gap-6">
-                    {{-- User Info --}}
                     <div class="flex items-center gap-4">
                         <div class="avatar placeholder">
                             <div

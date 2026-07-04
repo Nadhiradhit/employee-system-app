@@ -3,21 +3,22 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use OwenIt\Auditing\Auditable as AuditableTrait;
+use OwenIt\Auditing\Contracts\Auditable;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements Auditable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens, HasUuids;
+
+    use HasFactory, Notifiable, HasApiTokens, HasUuids, AuditableTrait;
 
     protected $keyType = 'string';
     protected $table = 'users';
@@ -37,11 +38,6 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -50,8 +46,38 @@ class User extends Authenticatable
         ];
     }
 
+    protected $auditEvents = [
+        'create',
+        'update',
+        'delete'
+    ];
+
+    protected $auditExclude = [
+        'password'
+    ];
+
     public function employee(): HasOne
     {
         return $this->hasOne(Employee::class, 'user_id', 'id');
+    }
+
+    public function transformAudit(array $data): array
+    {
+        if (empty($data['user_id'])) {
+            $data['user_id'] = Auth::id() ?? $this->user_id;
+        }
+
+        if (Auth::check() && Auth::id() == $data['user_id']) {
+
+            $authUser = Auth::user();
+            $data['user_type'] = $authUser->is_admin ? 'admin' : 'user';
+        } elseif (!empty($data['user_id'])) {
+            $user = User::find($data['user_id']);
+            $data['user_type'] = $user && $user->is_admin ? 'admin' : 'user';
+        } else {
+            $data['user_type'] = 'user';
+        }
+
+        return $data;
     }
 }

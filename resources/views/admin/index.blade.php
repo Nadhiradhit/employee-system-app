@@ -3,13 +3,13 @@
     <section class="flex flex-col lg:flex-row w-full gap-6">
         <div class="flex flex-col gap-6 flex-1 min-w-0">
 
-            {{-- Weather Widget --}}
+
             <x-weather-widget />
 
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <h1 class="text-2xl font-bold">Employees</h1>
-                    <p class="text-sm opacity-60">Manage all employee records</p>
+                    <p class="text-sm opacity-60">Employees Record</p>
                 </div>
             </div>
 

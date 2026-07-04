@@ -2,7 +2,7 @@
 
 <x-layout.dashboard>
     <div class="flex flex-col gap-6">
-        {{-- Header --}}
+
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold">Users</h1>
@@ -15,7 +15,6 @@
             </a>
         </div>
 
-        {{-- Flash Messages --}}
         @if (session('success'))
             <div role="alert" class="alert alert-success">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
@@ -38,7 +37,6 @@
             </div>
         @endif
 
-        {{-- Table --}}
         <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
             <table class="table">
                 <thead>
@@ -112,7 +110,6 @@
             </table>
         </div>
 
-        {{-- Pagination --}}
         <div class="flex justify-between gap-6 items-center">
             <x-navigation.paginator-summary :paginator="$users" />
             {{ $users->onEachSide(3)->links() }}

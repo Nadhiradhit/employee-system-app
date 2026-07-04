@@ -2,7 +2,7 @@
 
 <x-layout.dashboard>
     <div class="flex flex-col gap-6 max-w-2xl mx-auto">
-        {{-- Header --}}
+
         <div class="flex items-center gap-4">
             <a href="{{ route('users.index') }}" class="btn btn-ghost btn-sm btn-circle">
                 <span class="material-symbols-outlined">arrow_back</span>
@@ -13,7 +13,6 @@
             </div>
         </div>
 
-        {{-- Validation Errors --}}
         @if ($errors->any())
             <div role="alert" class="alert alert-error">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
@@ -31,7 +30,6 @@
             </div>
         @endif
 
-        {{-- Form --}}
         <div class="card bg-base-100 border border-base-content/5">
             <div class="card-body">
                 <form action="{{ route('users.update', $user->id) }}" method="POST" class="flex flex-col gap-4">
@@ -41,8 +39,8 @@
                     <x-forms.input name="name" label="Name" placeholder="Enter full name" type="text" required
                         :value="old('name', $user->name)" />
 
-                    <x-forms.input name="email" label="Email" placeholder="Enter email address" type="email" required
-                        :value="old('email', $user->email)" />
+                    <x-forms.input name="email" label="Email" placeholder="Enter email address" type="email"
+                        required :value="old('email', $user->email)" />
 
                     <x-forms.input name="password" label="Password" placeholder="Leave blank to keep current"
                         type="password" />
