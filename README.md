@@ -91,6 +91,3 @@ To run the application locally for development, you need to start both the backe
     ```bash
     npm run dev
     ```
-
-## Documentation API
-https://web.postman.co/workspace/My-Workspace~78abb84b-1956-4ecb-8531-49655f502409/collection/29163527-190ae6de-0eea-439a-8fe8-f5b5b58bc2c3?action=share&source=copy-link&creator=29163527
