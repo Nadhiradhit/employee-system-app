@@ -1,5 +1,7 @@
+## Employee System App
+
+## ERD 
 <img width="850" height="1100" alt="Untitled Diagram drawio" src="https://github.com/user-attachments/assets/c370ae98-4f9e-4c30-a467-d2d3e513a9e2" />
-# Employee System App
 
 ## Tech Stack
 
