@@ -3,7 +3,6 @@
 namespace App\Http\Services;
 
 use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -20,10 +19,10 @@ class AuthServices
         ]);
     }
 
-    public function loginService(array $credentials): User
+    public function loginService(array $credentials): ?User
     {
         if (! Auth::validate($credentials)) {
-            throw new AuthenticationException('Invalid email or password.');
+            return null;
         }
 
         $user = User::where('email', $credentials['email'])->first();

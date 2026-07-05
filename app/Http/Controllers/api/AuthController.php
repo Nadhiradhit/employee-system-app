@@ -44,6 +44,10 @@ class AuthController extends Controller
     {
         $user = $this->authServices->loginService($request->validated());
 
+        if (!$user) {
+            return $this->unauthorizedResponse('Email or password are incorrect');
+        }
+
         $token = $this->authServices->generateToken($user);
 
         Auth::setUser($user);
