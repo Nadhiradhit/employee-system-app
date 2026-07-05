@@ -20,15 +20,15 @@ class EmployeeController extends Controller
     {
         $limit = (int) $request->input('per_page', 10);
 
-        $keyword = $request->input('keyword') ?? '';
+        $keyword = (string) $request->input('keyword') ?? '';
 
-        $sortBy = $request->input('sort') ?? 'desc';
+        $sortBy = (string) $request->input('sort') ?? 'desc';
 
-        $sortColumn = $request->input('sort_by') ?? 'name';
+        $sortColumn = (string) $request->input('sort_by') ?? 'name';
 
-        $filterByStatus = $request->input('status') ?? '';
+        $filterByStatus = (string) $request->input('status') ?? '';
 
-        $filterByDepartment = $request->input('department') ?? '';
+        $filterByDepartment = (string) $request->input('department') ?? '';
 
         $employees = $this->employeeService->list($keyword, $limit, $sortBy, $filterByStatus, $filterByDepartment, $sortColumn);
 

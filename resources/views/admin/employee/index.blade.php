@@ -9,7 +9,7 @@
             </div>
             <form id="filter-form" method="GET" class="flex flex-col items-stretch gap-2">
                 <x-forms.input type="text" name="keyword" value="{{ request('keyword') }}"
-                    placeholder="Search Email or ID..." />
+                    placeholder="Search Email , Name Or ID..." />
 
                 <x-forms.input type="text" name="department" value="{{ request('department') }}"
                     placeholder="Filter by Department..." />
@@ -19,6 +19,9 @@
 
                 <x-forms.select name="status" icon="filter_list" :options="['active' => 'Active', 'inactive' => 'Inactive']" :selected="request('status')"
                     placeholder="All Statuses" onchange="this.form.submit()" />
+
+                <x-forms.select name="per_page" icon="filter_list" :options="[5 => '5', 10 => '10', 25 => '25', 50 => '50']" :selected="request('per_page')"
+                    placeholder="Filter by Per Page..." onchange="this.form.submit()" />
 
                 <x-forms.button type="submit" variant="primary" size="full" icon="search">
                     Search
@@ -34,7 +37,8 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <x-forms.select form="filter-form" onchange="this.form.submit()" name="sort" icon="swap_vert"
-                        :iconOnly="true" tooltipPosition="tooltip-left" :options="['desc' => 'Descending', 'asc' => 'Ascending']" :selected="request('sort', 'desc')" placeholder="Sort Order" />
+                        :iconOnly="true" tooltipPosition="tooltip-left" :options="['desc' => 'Descending', 'asc' => 'Ascending']" :selected="request('sort', 'desc')"
+                        placeholder="Sort Order" />
                     <a href="{{ route('employees.create') }}">
                         <x-forms.button type="button" variant="primary" size="md" icon="person_add">
                             Add Employee
@@ -118,13 +122,11 @@
                                             <span class="material-symbols-outlined text-base">edit</span>
                                         </a>
                                         <form action="{{ route('employees.destroy', $employee->user_id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this employee?')">
+                                            method="POST" class="delete-form">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-ghost btn-xs text-error">
-                                                <span class="material-symbols-outlined text-base">delete</span>
-                                            </button>
+                                            <x-forms.button variant="danger" size="xs" icon="delete"
+                                                type="submit" />
                                         </form>
                                     </div>
                                 </td>

@@ -7,6 +7,7 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Services\UserService;
 use Illuminate\Http\Request;
+use SweetAlert2\Laravel\Swal;
 
 class UserController extends Controller
 {
@@ -18,7 +19,10 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $limit = (int) $request->input('per_page', 10);
-        $users = $this->userService->list($limit);
+        $keyword = (string) $request->input('keyword');
+        $sortColumn = (string) $request->input('sort_by');
+        $sortBy = (string) $request->input('sort');
+        $users = $this->userService->list($limit, $keyword, $sortColumn, $sortBy);
         return view('admin.user.index', compact('users'));
     }
 
@@ -57,9 +61,7 @@ class UserController extends Controller
     {
         $this->userService->modify($id, $request->validated());
 
-        return redirect()
-            ->route('users.index')
-            ->with('success', 'User updated successfully.');
+        return redirect()->route('users.index');
     }
 
 

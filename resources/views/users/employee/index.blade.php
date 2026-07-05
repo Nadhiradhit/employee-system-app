@@ -9,7 +9,7 @@
             </div>
             <form id="filter-form" method="GET" class="flex flex-col items-stretch gap-2">
                 <x-forms.input type="text" name="keyword" value="{{ request('keyword') }}"
-                    placeholder="Search Email or ID..." />
+                    placeholder="Search Email or Name..." />
 
                 <x-forms.input type="text" name="department" value="{{ request('department') }}"
                     placeholder="Filter by Department..." />
@@ -19,6 +19,9 @@
 
                 <x-forms.select name="status" icon="filter_list" :options="['active' => 'Active', 'inactive' => 'Inactive']" :selected="request('status')"
                     placeholder="All Statuses" onchange="this.form.submit()" />
+
+                <x-forms.select name="per_page" icon="filter_list" :options="[5 => '5', 10 => '10', 25 => '25', 50 => '50']" :selected="request('per_page')"
+                    placeholder="Filter by Per Page..." onchange="this.form.submit()" />
 
                 <x-forms.button type="submit" variant="primary" size="full" icon="search">
                     Search

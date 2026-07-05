@@ -24,7 +24,7 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:100',
-            'email' => 'required|email|max:100',
+            'email' => 'required|email|max:100|unique:users,email',
             'password' => 'required|min:8|max:100|regex:/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/',
         ];
     }
@@ -41,6 +41,7 @@ class RegisterRequest extends FormRequest
             'password.required' => 'Password is required',
             'password.min' => 'Password must be at least 8 characters long',
             'password.max' => 'Password must be at most 100 characters long',
+            'password.regex' => 'Password must contain uppercase, lowercase, number, and special character.',
         ];
     }
 }

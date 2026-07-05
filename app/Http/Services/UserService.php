@@ -13,9 +13,9 @@ class UserService
         private UserRepository $repository
     ) {}
 
-    public function list(int $limit = 10): LengthAwarePaginator
+    public function list(int $limit = 10, string $keyword = '', string $sortColumn = 'name', string $sortBy = 'desc'): LengthAwarePaginator
     {
-        return $this->repository->paginate($limit);
+        return $this->repository->paginate($limit, $keyword, $sortColumn, $sortBy);
     }
 
     public function view(string $id): User

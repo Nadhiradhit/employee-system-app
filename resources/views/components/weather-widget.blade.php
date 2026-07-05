@@ -1,4 +1,3 @@
-{{-- Weather Widget — fetches current weather via AJAX --}}
 <div class="card bg-base-100 border border-base-content/5" id="weather-widget">
     <div class="card-body">
         <h2 class="card-title gap-2">
@@ -6,7 +5,6 @@
             Current Weather
         </h2>
 
-        {{-- Coordinate Input Form --}}
         <form id="weather-form" class="flex flex-wrap items-end gap-3 mt-2">
             <div class="form-control w-32">
                 <label class="label py-0.5">
@@ -24,19 +22,16 @@
                     class="input input-bordered input-sm w-full" placeholder="106.8" min="-180" max="180"
                     required>
             </div>
-            <button type="submit" class="btn btn-primary btn-sm gap-1" id="weather-submit">
-                <span class="material-symbols-outlined text-base">search</span>
+            <x-forms.button type="submit" variant="primary" size="md" icon="search" id="weather-submit">
                 Fetch
-            </button>
+            </x-forms.button>
         </form>
 
-        {{-- Loading State --}}
         <div id="weather-loading" class="hidden flex items-center gap-2 mt-4">
             <span class="loading loading-spinner loading-sm text-primary"></span>
             <span class="text-sm opacity-60">Fetching weather data…</span>
         </div>
 
-        {{-- Error State --}}
         <div id="weather-error" class="hidden mt-4">
             <div class="alert alert-error alert-sm">
                 <span class="material-symbols-outlined text-base">error</span>
@@ -44,7 +39,6 @@
             </div>
         </div>
 
-        {{-- Weather Data Display --}}
         <div id="weather-data" class="hidden mt-4">
             <div class="flex items-center gap-4 mb-3">
                 <img id="weather-icon" src="" alt="Weather icon" class="w-16 h-16">

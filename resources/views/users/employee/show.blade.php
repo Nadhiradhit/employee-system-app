@@ -28,8 +28,15 @@
                         <div>
                             <h2 class="text-xl font-bold">{{ $employee->user->name ?? '—' }}</h2>
                             <p class="text-sm opacity-60">{{ $employee->user->email ?? '—' }}</p>
+                            <div class="mt-2 sm:hidden">
+                                @if ($employee->status === 'active')
+                                    <span class="badge badge-success badge-lg gap-1">Active</span>
+                                @else
+                                    <span class="badge badge-error badge-lg gap-1">Inactive</span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="ml-auto">
+                        <div class="ml-auto hidden sm:block">
                             @if ($employee->status === 'active')
                                 <span class="badge badge-success badge-lg gap-1">Active</span>
                             @else

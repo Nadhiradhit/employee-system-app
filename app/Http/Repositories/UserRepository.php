@@ -7,9 +7,24 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserRepository
 {
-    public function paginate(int $perPage = 10): LengthAwarePaginator
+    public function paginate(int $limit = 10, string $keyword = '', string $sortColumn = 'name', string $sortBy = 'desc'): LengthAwarePaginator
     {
-        return User::with('employee')->latest()->paginate($perPage);
+        $query = User::query();
+
+        $query->with('employee')->latest();
+
+        if ($keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                ->orWhere('email', 'like', "%{$keyword}%");
+        }
+
+        if ($sortColumn === 'name') {
+            $query->orderBy('name', $sortBy);
+        } elseif ($sortColumn === 'created_at') {
+            $query->orderBy('created_at', $sortBy);
+        }
+
+        return $query->paginate($limit);
     }
 
     public function findOrFail(string $id): User

@@ -46,23 +46,23 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $exceptions->respond(function ($response, Throwable $e, Request $request) {
-
+            // 404 Not Found
             if ($request->is('api/*') && $e instanceof NotFoundHttpException) {
                 return ApiResponseHelper::notFoundResponse();
             }
-
+            // 401 Unauthorized
             if ($request->is('api/*') && $e instanceof AuthenticationException) {
                 return ApiResponseHelper::unauthorizedResponse();
             }
-
+            // 403 Forbidden
             if ($request->is('api/*') && $e instanceof AccessDeniedHttpException) {
                 return ApiResponseHelper::forbiddenResponse();
             }
-
+            // 422 Unprocessable Entity
             if ($request->is('api/*') && $e instanceof ValidationException) {
-                return ApiResponseHelper::validationErrorResponse($e->errors());
+                return ApiResponseHelper::validationErrorResponse($e->errors(), $e->getMessage());
             }
-
+            // 500 Internal Server Error
             if ($request->is('api/*')) {
                 return ApiResponseHelper::serverErrorResponse($e->getMessage());
             }

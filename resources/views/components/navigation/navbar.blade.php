@@ -17,9 +17,7 @@
                 <p class="text-lg font-bold truncate">Dashboard, {{ Auth::user()->name }}</p>
                 <form action="{{ route('logout') }}" method="post" class="shrink-0">
                     @csrf
-                    <x-forms.button type="submit" variant="danger" size="sm">
-                        Logout
-                    </x-forms.button>
+                    <x-forms.button type="submit" variant="danger" size="sm" icon="logout" iconOnly />
                 </form>
             </div>
         </nav>

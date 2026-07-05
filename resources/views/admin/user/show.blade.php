@@ -2,8 +2,7 @@
 
 <x-layout.dashboard>
     <div class="flex flex-col gap-6 max-w-2xl mx-auto">
-        {{-- Header --}}
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row gap-2 sm:items-center justify-between">
             <div class="flex items-center gap-4">
                 <a href="{{ route('users.index') }}" class="btn btn-ghost btn-sm btn-circle">
                     <span class="material-symbols-outlined">arrow_back</span>
@@ -13,19 +12,15 @@
                     <p class="text-sm opacity-60">{{ $user->name }}</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 justify-end">
                 <a href="{{ route('users.edit', $user->id) }}" class="btn btn-primary btn-sm">
                     <span class="material-symbols-outlined text-base">edit</span>
                     Edit
                 </a>
-                <form action="{{ route('users.destroy', $user->id) }}" method="POST"
-                    onsubmit="return confirm('Are you sure you want to delete this user?')">
+                <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-error btn-sm">
-                        <span class="material-symbols-outlined text-base">delete</span>
-                        Delete
-                    </button>
+                    <x-forms.button type="submit" variant="danger" size="sm" icon="delete" />
                 </form>
             </div>
         </div>

@@ -6,10 +6,10 @@ use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Request;
 
 class EmployeeRepository
 {
-
 
     public function paginate(string $keyword = '', int $perPage = 10, string $sortBy = 'desc', string $filterByStatus = '', string $filterByDepartment = '', string $sortColumn = 'name'): LengthAwarePaginator
     {
@@ -21,7 +21,8 @@ class EmployeeRepository
             $query->where(function ($q) use ($keyword) {
                 $q->whereHas('user', function ($userQuery) use ($keyword) {
                     $userQuery->where('email', 'like', "%{$keyword}%")
-                        ->orWhere('id', 'like', "%{$keyword}%");
+                        ->orWhere('id', 'like', "%{$keyword}%")
+                        ->orWhere('name', 'like', "%{$keyword}%");
                 });
             });
         }
@@ -31,7 +32,7 @@ class EmployeeRepository
         }
 
         if ($filterByDepartment) {
-            $query->where('employee.department', $filterByDepartment);
+            $query->where('employee.department', 'like', '%' . $filterByDepartment . '%');
         }
 
         if ($sortColumn === 'name') {

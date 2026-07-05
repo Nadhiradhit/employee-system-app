@@ -3,7 +3,7 @@
 <x-layout.dashboard>
     <div class="flex flex-col gap-6 max-w-2xl mx-auto">
 
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex items-center gap-4">
                 <a href="{{ route('employees.index') }}" class="btn btn-ghost btn-sm btn-circle">
                     <span class="material-symbols-outlined">arrow_back</span>
@@ -13,19 +13,15 @@
                     <p class="text-sm opacity-60">{{ $employee->user->name ?? 'Unknown User' }}</p>
                 </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 justify-end">
                 <a href="{{ route('employees.edit', $employee->user_id) }}" class="btn btn-primary btn-sm">
                     <span class="material-symbols-outlined text-base">edit</span>
                     Edit
                 </a>
-                <form action="{{ route('employees.destroy', $employee->user_id) }}" method="POST"
-                    onsubmit="return confirm('Are you sure you want to delete this employee?')">
+                <form action="{{ route('employees.destroy', $employee->user_id) }}" method="POST" class="delete-form">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-error btn-sm">
-                        <span class="material-symbols-outlined text-base">delete</span>
-                        Delete
-                    </button>
+                    <x-forms.button type="submit" variant="danger" size="sm" icon="delete" />
                 </form>
             </div>
         </div>
@@ -49,16 +45,23 @@
 
                     <div class="flex items-center gap-4">
                         <div class="avatar placeholder">
-                            <div class="bg-primary text-primary-content w-16 rounded-full">
-                                <span
-                                    class="text-xl">{{ strtoupper(substr($employee->user->name ?? '?', 0, 1)) }}</span>
+                            <div
+                                class="bg-primary text-primary-content w-16 rounded-full flex items-center justify-center">
+                                <span class="text-xl">{{ strtoupper(substr($employee->user->name, 0, 1)) }}</span>
                             </div>
                         </div>
                         <div>
                             <h2 class="text-xl font-bold">{{ $employee->user->name ?? '—' }}</h2>
                             <p class="text-sm opacity-60">{{ $employee->user->email ?? '—' }}</p>
+                            <div class="mt-2 sm:hidden">
+                                @if ($employee->status === 'active')
+                                    <span class="badge badge-success badge-lg gap-1">Active</span>
+                                @else
+                                    <span class="badge badge-error badge-lg gap-1">Inactive</span>
+                                @endif
+                            </div>
                         </div>
-                        <div class="ml-auto">
+                        <div class="ml-auto hidden sm:block">
                             @if ($employee->status === 'active')
                                 <span class="badge badge-success badge-lg gap-1">Active</span>
                             @else

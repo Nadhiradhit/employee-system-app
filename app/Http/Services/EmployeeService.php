@@ -9,7 +9,9 @@ use Illuminate\Support\Collection;
 
 class EmployeeService
 {
-    public function __construct(private EmployeeRepository $repository) {}
+    public function __construct(
+        private EmployeeRepository $repository
+    ) {}
 
     public function list(string $keyword = '', int $limit = 10, string $sortBy = 'desc', string $filterByStatus = '', string $filterByDepartment = '', string $sortColumn = 'name'): LengthAwarePaginator
     {
