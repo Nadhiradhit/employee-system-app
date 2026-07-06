@@ -27,16 +27,12 @@ class AuthController extends Controller
     {
         $user = $this->authServices->registerService($request->validated());
 
-        $token = $this->authServices->generateToken($user);
-
         $data = [
             'user' => $user,
-            'access_token' => $token,
         ];
 
         return $this->createdResponse('User registered successfully', [
             'user' => $data['user'],
-            'access_token' => $data['access_token'],
         ]);
     }
 

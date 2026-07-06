@@ -140,9 +140,10 @@ The API handles various exceptions and returns the following HTTP status codes a
 
 ### 1. Register User
 
-- **URL**: `/register`
+- **URL**: `/user/create`
 - **Method**: `POST`
-- **Description**: Register a new user and return an access token.
+- **Auth Required**: Yes (`sanctum`, Admin only)
+- **Description**: Register a new user.
 
 **Response (201 Created)**:
 
@@ -151,10 +152,20 @@ The API handles various exceptions and returns the following HTTP status codes a
     "status": true,
     "message": "User registered successfully",
     "data": {
-        "user": { ... },
-        "access_token": "token_string"
+        "user": { ... }
     },
     "status_code": 201
+}
+```
+
+**Response (403 Forbidden)**:
+
+```json
+{
+    "status": false,
+    "message": "You do not have permission to access this resource.",
+    "errors": null,
+    "status_code": 403
 }
 ```
 
